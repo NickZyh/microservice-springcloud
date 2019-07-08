@@ -1,0 +1,28 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: microservice-feign-consumer
+
+eureka:
+  client:
+    # 是否需要注册到注册中心
+    register-with-eureka: true
+    # 是否需要从注册中心获取服务列表
+    fetch-registry: true
+    serviceUrl:
+      # 声明服务注册中心地址
+      defaultZone: http://192.168.21.1:8080/eureka/
+
+# 开启熔断
+feign:
+  hystrix:
+    enabled: true
+
+# 设置全局级别的日志等级
+logging:
+#  level: debug
+#  为单独某个客户端设置日志级别
+  level:
+    com.springcloud.microservicefeignconsumer.feign.UserSerivce: DEBUG
