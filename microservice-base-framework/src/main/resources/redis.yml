@@ -1,0 +1,31 @@
+# 将redis的配置单独拿出来做一个文件,分开配置;
+# 好处：1 方便管理,一个文件配置一个组件 2 可以在git的忽略上传文件中忽略,保证安全;
+spring:
+  redis:
+    # Redis数据库索引（默认为0）,redis一共分为16个库,每个库是分离的;就类似于mysql的数据库,只不过
+    # redis限制了库的数量
+    database: 0
+    # 服务器地址
+    host: localhost
+    # 端口
+    port: 6379
+    # 密码(默认为无密码)
+    password: 123456
+    # redis的连接超时时间,单位为毫秒
+    timeout: 10000
+    # 当redis连接数耗尽时,是否阻塞
+    # 连接耗尽时是否阻塞, false报异常,true阻塞直到超时,默认true
+    block-when-exhausted: true
+
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 1024
+        # 连接池中的最大空闲连接
+        max-idle: 200
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）,单位为毫秒
+        max-wait: 10000
+
+

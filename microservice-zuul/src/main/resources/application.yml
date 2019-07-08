@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: microservice-zuul
+
+server:
+  port: 8084
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.21.1:8080/eureka/
+
+zuul:
+#  配置路由,可以配置多个
+  routes:
+#    为微服务配置代理服务,该服务名可以自定义
+    api-a:
+#      配置该服务的uri,**代表路由地址,此时的访问地址如 http://localhost:8084/api/a/users/1
+      path: /api/a/**
+#      被代理的服务的application-name
+      serviceId: microservice-feign-consumer

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+<!--    springboot-parent依赖-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.2.RELEASE</version>
+    </parent>
+
+<!--    依赖引入的坐标-->
+    <groupId>com.springcloud</groupId>
+    <artifactId>microservice-dependencies</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+<!--    打包类型为pom,主要用于导入依赖-->
+    <packaging>pom</packaging>
+
+<!--    项目名称-->
+    <name>microservice-dependencies</name>
+
+    <properties>
+<!--        环境配置-->
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+<!--        spring cloud的依赖版本,此处选择spring cloud的Finchley发行版本-->
+        <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+    </properties>
+
+    <!--使用该标签表示子模块不继承该标签中的依赖,除非显示的声明;如果显示声明需要引入则不需要填版本号,继承父pom的版本号-->
+    <dependencyManagement>
+<!--        引入spring cloud依赖-->
+
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+<!--    maven自动构建项目时的插件配置,maven的生命周期都是以插件来支持的,常用插件如下,要注意的是,这里仅做展示-->
+<!--    默认情况下IDEA会自带这些插件,但是如果我们想使用与spring boot中定义好的插件版本的话,那么我们就需要-->
+<!--    手动引入,从而覆盖默认版本,spring boot中对于maven插件的版本也有管理,可以看到以下插件都没有设置版本号-->
+<!--    实际上不配置也没事,只是说配置更好,所以不强求-->
+    <build>
+        <plugins>
+<!--            编译插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+
+            <!-- 打包 jar 文件时,配置 manifest 文件,加入 lib 包的 jar 依赖 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <!-- Add directory entries -->
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                    <addClasspath>true</addClasspath>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- resource -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+
+            <!-- install -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+            </plugin>
+
+            <!-- clean -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+
+            <!-- ant -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+
+            <!-- dependency -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Java Document Generate -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- YUI Compressor (CSS/JS压缩) -->
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>yuicompressor-maven-plugin</artifactId>
+                    <version>1.5.1</version>
+                    <executions>
+                        <execution>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>compress</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <jswarn>false</jswarn>
+                        <nosuffix>true</nosuffix>
+                        <linebreakpos>30000</linebreakpos>
+                        <force>true</force>
+                        <includes>
+                            <include>**/*.js</include>
+                            <include>**/*.css</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/*.min.js</exclude>
+                            <exclude>**/*.min.css</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+<!--        maven打包是不会把资源文件(如html等静态资源)打包进Jar的,所以此处配置一下,将静态资源也全部进行打包-->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+<!--    以下都是一些依赖的下载仓库地址,包括插件仓库,依赖仓库等等-->
+
+<!--        配置maven仓库地址,加快导入依赖速度,以下为常用的仓库地址-->
+    <repositories>
+<!--        aliyun -->
+        <repository>
+            <id>aliyun-repos</id>
+            <name>Aliyun Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>sonatype-repos</id>
+            <name>Sonatype Repository</name>
+            <url>https://oss.sonatype.org/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sonatype-repos-s</id>
+            <name>Sonatype Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+<!--    spring的依赖仓库,这个地方就是为了防止spring的某些版本未发行到中央仓库,只发行到了自己的仓库,所以为了防止-->
+<!--    某些未发行的依赖无法导入,所以一般再开发时一定要引入spring的官方仓库;但是一般来说,RELEASE版本的依赖不会出现这种情况-->
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+<!--    插件仓库-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-repos</id>
+            <name>Aliyun Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

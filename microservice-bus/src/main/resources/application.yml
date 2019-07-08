@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    bus:
+      # 开启消息总线
+      enabled: true
+      # 开启消息跟踪,访问 uri/trace可获得事件
+      trace:
+        enabled: true
+
+  # rabbitmq配置
+  rabbitmq:
+    # 主机
+    host: localhost
+    # 端口,rabbitmq的默认端口为5672
+    port: 5672
+    # username
+    username: nick
+    # password
+    password: 980601@Zhou
+
+# 暴露/bus/refresh端点,如果不暴露则报错405(METHOD NOT ALLOW),即该端口无法被访问;这是cloud 2.*的改动
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
+

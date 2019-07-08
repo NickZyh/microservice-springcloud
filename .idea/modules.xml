@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/microservice-base-framework/microservice-base-framework.iml" filepath="$PROJECT_DIR$/microservice-base-framework/microservice-base-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-base-service/microservice-base-service.iml" filepath="$PROJECT_DIR$/microservice-base-service/microservice-base-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-bus/microservice-bus.iml" filepath="$PROJECT_DIR$/microservice-bus/microservice-bus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-config/microservice-config.iml" filepath="$PROJECT_DIR$/microservice-config/microservice-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-dependencies/microservice-dependencies.iml" filepath="$PROJECT_DIR$/microservice-dependencies/microservice-dependencies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-eureka/microservice-eureka.iml" filepath="$PROJECT_DIR$/microservice-eureka/microservice-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-feign-consumer/microservice-feign-consumer.iml" filepath="$PROJECT_DIR$/microservice-feign-consumer/microservice-feign-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-ribbon-consumer/microservice-ribbon-consumer.iml" filepath="$PROJECT_DIR$/microservice-ribbon-consumer/microservice-ribbon-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/microservice-springcloud.iml" filepath="$PROJECT_DIR$/.idea/microservice-springcloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-zuul/microservice-zuul.iml" filepath="$PROJECT_DIR$/microservice-zuul/microservice-zuul.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    config:
+      # 配置中心uri
+      uri: http://localhost:8086
+      # 配置文件名称
+      name: microservice-feign-consumer
+      # 分支
+      label: master
+      # 配置文件环境
+      profile: prod

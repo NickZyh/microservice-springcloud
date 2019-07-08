@@ -1,0 +1,2 @@
+开发技巧：获取值时只要 .var然后回车就可以自动补齐变量,如下：
+    RequestContext.getCurrentContext().var + 回车 --> RequestContext currentContext = RequestContext.getCurrentContext();

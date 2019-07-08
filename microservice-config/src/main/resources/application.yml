@@ -1,0 +1,39 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: microservice-config
+
+  cloud:
+    # 配置中心配置
+    config:
+      # 配置仓库的分支
+      label: master
+      # git服务器的指定
+      server:
+        git:
+          # git仓库url
+          # 备注:如果使用 GitLab 作为仓库的话，git.uri需要在结尾加上.git,GitHub则不用
+          uri: https://github.com/NickZyh/microservice-config-files
+          # git仓库中的文件夹
+          search-paths: profiles
+          # 访问git的账号和密码
+          username: NickZyh
+          password: 980601@Zhou
+
+      # rabbitmq配置
+      rabbitmq:
+        # 主机
+        host: localhost
+        # 端口,rabbitmq的默认端口为15672
+        port: 15672
+        # username
+        username: guest
+        # password
+        password: 980601@Zhou
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.21.1:8080/eureka/

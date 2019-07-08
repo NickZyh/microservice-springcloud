@@ -1,0 +1,19 @@
+注意事项：
+配置服务器的默认端口为8888,如果修改了默认端口,则客户端项目就不能在application.yml或application.properties中配置
+spring.cloud.config.uri,必须在 bootstrap.yml 或是 bootstrap.properties 中配置.
+原因:application.yml启动加载顺序比bootstrap慢,当application.yml被加载的时候,此时config-client
+的内置包就会去连接config-server的默认端口8888,如果此时连接不上则会导致项目启动错误;所以当配置中心的端口
+被修改时,任意的配置中心客户端都应该使用bootstrap.yml编写配置文件,这样就可以在项目启动之前覆盖默认的
+spring.cloud.config.uri;
+注意：这里的bootstrap不是前端的框架,在这里是启动的意思;bootstrap.yml加载时机为项目最开始;
+
+在springboot中可以配置四种配置文件:
+    application.properties
+    application.yml
+    bootstrap.properties
+    bootstrap.yml
+bootstrap的加载顺序会优先于application;
+
+负责与git交互的配置中心称为config-server,当config-server搭建起来后,此时分布式配置中心已经搭建完成;
+但是此时config-server与被托管的配置文件对应的服务没有建立联系,所以需要将服务与配置中心产生联系,被联系的客户端被称为
+config-client,即配置中心客户端;每个将配置文件托管给配置中心的服务都是一个配置中心客户端;
