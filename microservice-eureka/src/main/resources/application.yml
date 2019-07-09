@@ -1,9 +1,6 @@
 #注册服务的端口号
 server:
   port: 8080
-  # 项目访问根目录,要注意的是服务注册中心的项目访问根目录不能配置,因为这样会使注册者找不到路径
-#  servlet:
-#    context-path: /eureka-server
 
 # 定义项目的名称,主要用于该服务被发现
 spring:
@@ -13,13 +10,13 @@ spring:
 eureka:
   instance:
     # 配置eureka服务器的ip地址,此处是在本地,所以为本机地址
-    hostname: 192.168.21.1
+    hostname: localhost
   client:
     # 是否需要注册到注册中心，因为该项目本身作为服务注册中心，所以为false
     register-with-eureka: false
-    # 是否需要从注册中心获取服务列表，原因同上，为false
+    # 是否需要从注册中心获取服务列表，原因同上，为false;当为true时,那么服务就会每隔一段时间从服务注册中心获取到服务注册列表缓存到本都;
     fetch-registry: false
-    #注册服务器的地址：服务提供者和服务消费者都要依赖这个地址，
+    # 注册服务器的地址：服务提供者和服务消费者都要依赖这个地址,默认是http://localhost:8761/eureka；多个地址可使用 , 分隔。并且,/eureka/是固定的,不能更改
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 

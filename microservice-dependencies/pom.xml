@@ -3,56 +3,72 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--    springboot-parent依赖-->
+    <!--springboot-parent依赖-->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
+        <version>2.1.6.RELEASE</version>
+        <!--表示引入parent - pom.xml文件的相对路径.默认值是../pom.xml,../表示当前文件夹的父文件夹;
+         maven引入父pom的查找顺序为relativePath元素的指定地址(未指定则包含默认值) -> 本地仓库 -> 远程仓库;
+         当设置为<relativePath/>时,表示空值,即始终从中央仓库获取该POM-->
+        <relativePath/>
     </parent>
 
-<!--    依赖引入的坐标-->
+    <!--当前module的坐标,也是其他pom引入当前pom作为parent的坐标-->
     <groupId>com.springcloud</groupId>
     <artifactId>microservice-dependencies</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-<!--    打包类型为pom,主要用于导入依赖-->
+    <!--打包类型为pom,表示能够作为父类pom文件被其他module引入-->
     <packaging>pom</packaging>
+    <!--项目版本(语义化版本规范);RELEASE版本表示正式发布版;
+    SNAPSHOT表示快照版,意味着该版本可能会经常更新,处于迭代状态-->
+    <!--<version>1.0.0-SNAPSHOT</version>-->
 
-<!--    项目名称-->
+    <!--项目的名称, Maven产生的文档用-->
     <name>microservice-dependencies</name>
+    <!--项目主页的URL, Maven产生的文档用-->
+    <!--<url>http://www.baidu.com/banseon</url>-->
+    <!--项目的详细描述, Maven 产生的文档用-->
+    <!--<description>spring-cloud demo</description>-->
 
+    <!--指定项目的环境配置-->
     <properties>
-<!--        环境配置-->
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-<!--        spring cloud的依赖版本,此处选择spring cloud的Finchley发行版本-->
+        <!--spring cloud的依赖版本号,此处选择spring cloud的Finchley发行版本-->
+        <!--properties中可以定义版本号,然后再当前pom文件中能够使用占位符引入这些版本号-->
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
     </properties>
 
-    <!--使用该标签表示子模块不继承该标签中的依赖,除非显示的声明;如果显示声明需要引入则不需要填版本号,继承父pom的版本号-->
+    <!--表示对指定依赖进行管理,子模块不能直接继承该标签中的依赖;如果想要引入则需引入需要引进的依赖坐标,
+    但是不需要引进版本,继承父pom的版本号由parent统一进行版本的依赖管理-->
     <dependencyManagement>
-<!--        引入spring cloud依赖-->
-
+        <!--spring-cloud的依赖,各组件的版本能够直接点进spring-cloud-dependencies中查看-->
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
+                <!--引入properties中的版本号-->
                 <version>${spring-cloud.version}</version>
+                <!--type和scope是Maven用来解决pom无法多继承的问题的;由于当前pom已经引入
+                springboot作为parent-pom,所以无法直接再引入spring-cloud的依赖pom;
+                <type>pom</type>:表示当前依赖为pom类型
+                <scope>import</scope>:表示将上述pom引入到当前pom中
+                一般来说,pom和import是联合使用,用于解决多继承问题-->
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-<!--    maven自动构建项目时的插件配置,maven的生命周期都是以插件来支持的,常用插件如下,要注意的是,这里仅做展示-->
-<!--    默认情况下IDEA会自带这些插件,但是如果我们想使用与spring boot中定义好的插件版本的话,那么我们就需要-->
-<!--    手动引入,从而覆盖默认版本,spring boot中对于maven插件的版本也有管理,可以看到以下插件都没有设置版本号-->
-<!--    实际上不配置也没事,只是说配置更好,所以不强求-->
+    <!--maven项目构建时的插件依赖配置;maven的生命周期都是以插件来支持的,常用插件如下,要注意的是,这里仅做展示,
+    因为默认情况下IDEA会自带这些插件,但是如果我们想使用spring boot中版本一致的插件情况下,此时就需要手动引入,覆盖默认版本;
+    spring boot中对于maven插件的版本也有管理,可以看到以下插件都没有设置版本号;实际上不配置也没事,只是说配置更好,所以不强求-->
     <build>
         <plugins>
-<!--            编译插件-->
+            <!--编译插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -60,8 +76,7 @@
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
-
-            <!-- 打包 jar 文件时,配置 manifest 文件,加入 lib 包的 jar 依赖 -->
+            <!--打包成Jar的插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -117,6 +132,7 @@
             </plugin>
         </plugins>
 
+        <!--同dependencyManagement的作用相同;要注意的是,直接plugins标注的插件表示引入该pom的pom能够直接继承,即能够直接使用-->
         <pluginManagement>
             <plugins>
                 <!-- Java Document Generate -->
@@ -165,25 +181,29 @@
             </plugins>
         </pluginManagement>
 
-<!--        maven打包是不会把资源文件(如html等静态资源)打包进Jar的,所以此处配置一下,将静态资源也全部进行打包-->
+<!--        -->
+        <!--配置静态资源打包进Jar;因为maven打包是不会把资源文件(如html等静态资源)打包进Jar的,所以此处配置
+        一下,将静态资源也全部进行打包-->
         <resources>
             <resource>
+                <!--路径-->
                 <directory>src/main/java</directory>
+                <!--排除-->
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
             <resource>
+                <!--排除-->
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
     </build>
 
-<!--    以下都是一些依赖的下载仓库地址,包括插件仓库,依赖仓库等等-->
+    <!--依赖仓库配置,包括插件仓库,依赖仓库等-->
 
-<!--        配置maven仓库地址,加快导入依赖速度,以下为常用的仓库地址-->
     <repositories>
-<!--        aliyun -->
+        <!--配置maven远程仓库地址,加快导入依赖速度,以下为常用的仓库地址-->
         <repository>
             <id>aliyun-repos</id>
             <name>Aliyun Repository</name>
@@ -191,6 +211,8 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
+            <!--是否每次访问仓库时都引入改变的snapshot版本的依赖;由于snapshot处于迭代器,通常来说为了保证依赖版本的稳定性
+            不会每次访问Maven仓库都去更新snapshot的依赖版本-->
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -219,8 +241,9 @@
             </snapshots>
         </repository>
 
-<!--    spring的依赖仓库,这个地方就是为了防止spring的某些版本未发行到中央仓库,只发行到了自己的仓库,所以为了防止-->
-<!--    某些未发行的依赖无法导入,所以一般再开发时一定要引入spring的官方仓库;但是一般来说,RELEASE版本的依赖不会出现这种情况-->
+        <!--spring-snapshots依赖仓库;这个仓库表示引入spring中的snapshot版本的依赖,而由于snapshot的依赖都不会发行到
+        Maven中央仓库(RELEASE才是发布版本),所以需要引入spring自己存放snapshot版本依赖的官方仓库,更新snapshot;这种情
+        况一般出现于引入了snapshot版本的依赖时,但是一般来说我们都只使用正式发布版依赖,而不使用快照版依赖-->
         <repository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>
@@ -239,7 +262,7 @@
         </repository>
     </repositories>
 
-<!--    插件仓库-->
+    <!--插件仓库-->
     <pluginRepositories>
         <pluginRepository>
             <id>aliyun-repos</id>

@@ -3,12 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--microservice-dependencies作为parent-->
     <parent>
-<!--        导入自定义父类依赖,代替总的依赖-->
         <groupId>com.springcloud</groupId>
         <artifactId>microservice-dependencies</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-<!--        relativePath的作用(待整理)-->
         <relativePath>../microservice-dependencies/pom.xml</relativePath>
     </parent>
 
@@ -16,29 +15,21 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- Spring Boot Begin -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- Spring Boot End -->
-
-<!--    eureka-server-->
+        <!--eureka-server-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
 
-<!--    由于springboot被打成Jar包后是通过java -jar来运行,所以我们需要指定我们Springboot的启动类,如果不指定会报错-->
-<!--    此处通过maven插件的方式来指定-->
+    <!--由于springboot项目会被打成Jar包后是通过java -jar来运行,所以我们需要指定我们Springboot的启动类,如果不指定会报错-->
+    <!--此处通过maven插件的方式来指定-->
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                定义主类位置-->
+                <!--指定主类位置-->
                 <configuration>
                     <mainClass>com.springcloud.microserviceeureka.MicroserviceEurekaApplication</mainClass>
                 </configuration>
